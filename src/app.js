@@ -53,29 +53,26 @@ app.delete("/repositories/:id", (request, response) => {
     (repository) => repository.id === id
   );
 
-  if(repositoryIndex && repositoryIndex !== -1){
-    repositories.splice(repositoryIndex, 1);
-  } else {
-    return response.status(400).send({error: "Repositorio nao encontrado"});
+  if (repositoryIndex === -1) {
+    return response.status(400).send({ error: "Repositorio nao encontrado" });
   }
-  
 
+  repositories.splice(repositoryIndex, 1);
   return response.status(204).send();
 });
 
 app.post("/repositories/:id/like", (request, response) => {
-    const { id } = request.params;
-  
-    const repository = repositories.find((repository) => repository.id === id);
-  
-    if (repository) {
-      repository.likes++;
-      
-    } else {
-      return response.status(400).send({ error: "Repositorio nao encontrado" });
-    }
+  const { id } = request.params;
 
-    return response.send(repository)
+  const repository = repositories.find((repository) => repository.id === id);
+
+  if (repository) {
+    repository.likes++;
+  } else {
+    return response.status(400).send({ error: "Repositorio nao encontrado" });
+  }
+
+  return response.send(repository);
 });
 
 module.exports = app;
